@@ -1,33 +1,44 @@
-usecaseDiagram
-    actor "Administrador" as admin
-    actor "Usuário Padrão" as user
+@startuml
+left to right direction
+skinparam packageStyle rectangle
 
-    package "Módulo Gestão Patrimonial (PoALAB)" {
-        usecase "Fornecer senha ao usuário" as UC_FornecerSenha
-        usecase "Criar novos materiais\n(consumo e capital)" as UC_CriarMateriais
-        usecase "Listar materiais" as UC_ListarMateriaisAdmin
-        usecase "Remover materiais" as UC_RemoverMateriais
-        usecase "Listar usuários" as UC_ListarUsuarios
-        usecase "Remover usuários" as UC_RemoverUsuarios
+actor "Administrador" as admin
+actor "Professor" as prof
 
-        usecase "Solicitar senha" as UC_SolicitarSenha
-        usecase "Cadastrar-se" as UC_Cadastrar
-        usecase "Fazer Login" as UC_Login
-        usecase "Editar senha" as UC_EditarSenha
-        usecase "Listar itens" as UC_ListarItensUser
-        usecase "Adicionar quantidade de item" as UC_AddQtdItem
-    }
+package "Sistema de Gestão de Itens" {
+  
+  usecase "Cadastrar Escola" as UC1
+  usecase "Cadastrar Usuário" as UC2
+  usecase "Cadastrar Tipo de Item" as UC3
+  usecase "Gerenciar Fornecedores" as UC4
+  
+  usecase "Registrar Compra" as UC_Compra
+  usecase "Atualizar Estoque" as UC_Atualizar
+  usecase "Registrar Log de\nMovimentação" as UC_Log
+  
+  usecase "Consultar Estoque" as UC5
+  usecase "Registrar Entrada de Item" as UC6
+  usecase "Registrar Saída de Item" as UC7
+  usecase "Consultar Movimentações" as UC8
+}
 
-    admin --> UC_FornecerSenha
-    admin --> UC_CriarMateriais
-    admin --> UC_ListarMateriaisAdmin
-    admin --> UC_RemoverMateriais
-    admin --> UC_ListarUsuarios
-    admin --> UC_RemoverUsuarios
+' Associações do Administrador
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
 
-    user --> UC_SolicitarSenha
-    user --> UC_Cadastrar
-    user --> UC_Login
-    user --> UC_EditarSenha
-    user --> UC_ListarItensUser
-    user --> UC_AddQtdItem
+' Associações do Professor
+prof --> UC5
+prof --> UC6
+prof --> UC7
+prof --> UC8
+
+' Relações de Inclusão (Regras de Negócio do Sistema)
+UC_Compra ..> UC_Atualizar : <<include>>
+UC6 ..> UC_Atualizar : <<include>>
+UC7 ..> UC_Atualizar : <<include>>
+
+UC_Atualizar ..> UC_Log : <<include>>
+
+@enduml
